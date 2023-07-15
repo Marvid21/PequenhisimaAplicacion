@@ -15,39 +15,42 @@ import pruebas.marcelo.clima.pequenhisimaaplicacion.R;
 
 public class ListaCiudadesActivity extends AppCompatActivity {
 
-    ArrayList<String> listDatos;
+    ArrayList<CiudadesVo> listDatos;
     RecyclerView rvCities;
+    String ciudadSeleccionada;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_ciudades);
 
+        listDatos = new ArrayList<>();
         rvCities = findViewById(R.id.rvCities);
-        rvCities.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
+        rvCities.setLayoutManager(new LinearLayoutManager(this));
 
-        listDatos = new ArrayList<String>();
-
-//        for(int i=0; i<=50; i++){
-//            listDatos.add("Dato #"+i+" ");
-//        }
-        listDatos.add("Asunción");
-        listDatos.add("Ciudad del Este");
-        listDatos.add("Encarnación");
-        listDatos.add("Loma Plata");
-        listDatos.add("Villa Rica");
+        llenarCiudades();
 
         AdapterRecycler adapterRecycler = new AdapterRecycler(listDatos);
 
         adapterRecycler.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Toast.makeText(getApplicationContext(), "Presionaste: "+listDatos.get(rvCities.getChildAdapterPosition(v)))
+                Toast.makeText(getApplicationContext(), "Presionaste: "+listDatos.get(rvCities.getChildAdapterPosition(v)).getCiudad(), Toast.LENGTH_SHORT).show();
+                ciudadSeleccionada = listDatos.get(rvCities.getChildAdapterPosition(v)).getCiudad();
                 Intent iCiudad = new Intent(getBaseContext(), DetalleClimaCiudadActivity.class);
+                iCiudad.putExtra("ciudad", ciudadSeleccionada);
                 startActivity(iCiudad);
             }
         });
 
         rvCities.setAdapter(adapterRecycler);
+    }
+
+    private void llenarCiudades() {
+        listDatos.add(new CiudadesVo("Asunción"));
+        listDatos.add(new CiudadesVo("Ciudad del Este"));
+        listDatos.add(new CiudadesVo("Encarnación"));
+        listDatos.add(new CiudadesVo("Loma Plata"));
+        listDatos.add(new CiudadesVo("Villa Rica"));
     }
 }

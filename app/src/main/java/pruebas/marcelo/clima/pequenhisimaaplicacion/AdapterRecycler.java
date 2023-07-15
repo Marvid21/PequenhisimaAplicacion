@@ -12,10 +12,10 @@ import java.util.ArrayList;
 
 public class AdapterRecycler extends RecyclerView.Adapter<AdapterRecycler.ViewHolderDatos> implements View.OnClickListener {
 
-    ArrayList<String> listDatos;
+    ArrayList<CiudadesVo> listDatos;
     private View.OnClickListener listener;
 
-    public AdapterRecycler(ArrayList<String> listDatos){
+    public AdapterRecycler(ArrayList<CiudadesVo> listDatos){
         this.listDatos = listDatos;
     }
 
@@ -30,7 +30,7 @@ public class AdapterRecycler extends RecyclerView.Adapter<AdapterRecycler.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolderDatos holder, int position) {
-        holder.asignarDatos(listDatos.get(position));
+        holder.tvItem.setText(listDatos.get(position).getCiudad());
     }
 
     @Override
