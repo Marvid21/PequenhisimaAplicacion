@@ -1,4 +1,4 @@
-package com.alain.cursos.pequenhisimaaplicacion;
+package prueba.marce.clima.pequenhisimaaplicacion;
 
 import android.content.Context;
 
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("com.alain.cursos.pequenhisimaaplicacion", appContext.getPackageName());
+        assertEquals("com.alain.clima.pequenhisimaaplicacion", appContext.getPackageName());
     }
 }

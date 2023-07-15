@@ -1,4 +1,4 @@
-package com.alain.cursos.pequenhisimaaplicacion;
+package prueba.marce.clima.pequenhisimaaplicacion;
 
 import org.junit.Test;
 
