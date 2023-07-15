@@ -1,10 +1,10 @@
-package prueba.marce.clima.pequenhisimaaplicacion;
+package pruebas.marcelo.clima.pequenhisimaaplicacion;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-import com.alain.cursos.pequenhisimaaplicacion.R;
+import pruebas.marcelo.clima.pequenhisimaaplicacion.R;
 
 public class DetalleClimaCiudadActivity extends AppCompatActivity {
 

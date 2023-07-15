@@ -1,4 +1,4 @@
-package prueba.marce.clima.pequenhisimaaplicacion;
+package pruebas.marcelo.clima.pequenhisimaaplicacion;
 
 import android.content.Context;
 
