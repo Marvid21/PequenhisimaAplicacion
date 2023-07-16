@@ -15,7 +15,9 @@
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="200dp"
         android:gravity="center"
-        android:text="Ciudad"/>
+        android:text="Ciudad"
+        android:textSize="20sp"
+        android:textStyle="bold"/>
     <TextView
         android:id="@+id/tvTemperatura"
         android:layout_width="match_parent"
@@ -24,7 +26,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:gravity="center"
-        android:text="Temperatura"/>
+        android:text="Temperatura"
+        android:textSize="20sp"
+        android:textStyle="bold"/>
     <TextView
         android:id="@+id/tvSensaTermi"
         android:layout_width="match_parent"
@@ -33,7 +37,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:gravity="center"
-        android:text="Sensa Termi"/>
+        android:text="Sensa Termi"
+        android:textSize="20sp"
+        android:textStyle="bold"/>
     <TextView
         android:id="@+id/tvTempeMin"
         android:layout_width="match_parent"
@@ -42,7 +48,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:gravity="center"
-        android:text="Tempe Min"/>
+        android:text="Tempe Min"
+        android:textSize="20sp"
+        android:textStyle="bold"/>
     <TextView
         android:id="@+id/tvTempeMax"
         android:layout_width="match_parent"
@@ -51,7 +59,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:gravity="center"
-        android:text="Tempe Max"/>
+        android:text="Tempe Max"
+        android:textSize="20sp"
+        android:textStyle="bold"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
