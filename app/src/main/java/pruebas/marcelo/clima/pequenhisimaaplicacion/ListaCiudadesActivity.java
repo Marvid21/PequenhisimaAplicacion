@@ -6,14 +6,26 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.Collator;
 import java.text.Normalizer;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Locale;
 
-import pruebas.marcelo.clima.pequenhisimaaplicacion.R;
 import pruebas.marcelo.clima.pequenhisimaaplicacion.retrofit.ApiClient;
 import pruebas.marcelo.clima.pequenhisimaaplicacion.retrofit.ApiInterface;
 import pruebas.marcelo.clima.pequenhisimaaplicacion.retrofit.Main;
@@ -25,13 +37,13 @@ import retrofit2.Response;
 public class ListaCiudadesActivity extends AppCompatActivity {
 
     ArrayList<CiudadesVo> listDatos;
+    ArrayList<CiudadesVo> filterList;
     RecyclerView rvCities;
+    EditText etSearch;
     String ciudadSeleccionada, ciudadSelecLimpia;
     Double tempe, sensaTer, tempeMin, tempeMax;
     Integer temperatura, sensaTermi, tempeMini, tempeMaxi;
     final String countryCode = ",PY";
-    String url = "https://api.openweathermap.org/data/2.5/weather?q=Ciudad+del+Este,PY&appid=e38a45ab04f410c8b0956c5aeb3d8ab9";
-    String url2= "https://api.openweathermap.org/data/2.5/weather?appid=e38a45ab04f410c8b0956c5aeb3d8ab9&q=Loma%2BPlata%2CPY";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +51,10 @@ public class ListaCiudadesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_lista_ciudades);
 
         listDatos = new ArrayList<>();
+        etSearch = findViewById(R.id.etSearch);
         rvCities = findViewById(R.id.rvCities);
         rvCities.setLayoutManager(new LinearLayoutManager(this));
+
 
         llenarCiudades();
 
@@ -59,6 +73,33 @@ public class ListaCiudadesActivity extends AppCompatActivity {
         });
 
         rvCities.setAdapter(adapterRecycler);
+
+
+        etSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                s = s.toString().toLowerCase(Locale.ROOT);
+//                filterList = new ArrayList<>();
+//                for(int i=0;i<listDatos.size(); i++){
+//                    final String text = listDatos.get(i).toString().toLowerCase(Locale.ROOT);
+//                    if(text.contains(s)){
+//                        filterList.add(listDatos.get(i));
+//
+//                    }
+//                }
+//                adapterRecycler.notifyDataSetChanged();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
     }
 
     private void getWeatherData(String city){
@@ -104,10 +145,38 @@ public class ListaCiudadesActivity extends AppCompatActivity {
     }
 
     private void llenarCiudades() {
-        listDatos.add(new CiudadesVo("Asunción"));
-        listDatos.add(new CiudadesVo("Ciudad del Este"));
-        listDatos.add(new CiudadesVo("Encarnación"));
-        listDatos.add(new CiudadesVo("Loma Plata"));
-        listDatos.add(new CiudadesVo("Villarrica"));
+
+        try {
+            JSONArray jsonArray = new JSONArray(loadJSONFromAssets());
+            for(int i=0; i<jsonArray.length(); i++){
+                try {
+                    JSONObject objName = jsonArray.getJSONObject(i);
+                    if(objName.getString("country").contains("PY")){
+                        listDatos.add(new CiudadesVo(objName.getString("name")));
+                    }
+                }catch (JSONException e){
+                    e.printStackTrace();
+                }
+            }
+
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+
+    }
+    public String loadJSONFromAssets(){
+        String json = null;
+        try {
+            InputStream is = getAssets().open("citylist.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, "UTF-8");
+        }catch (IOException ex){
+            ex.printStackTrace();
+            return null;
+        }
+        return json;
     }
 }
