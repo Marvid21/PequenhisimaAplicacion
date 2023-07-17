@@ -6,12 +6,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -19,12 +16,10 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.Collator;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Locale;
 
 import pruebas.marcelo.clima.pequenhisimaaplicacion.retrofit.ApiClient;
 import pruebas.marcelo.clima.pequenhisimaaplicacion.retrofit.ApiInterface;
@@ -37,7 +32,6 @@ import retrofit2.Response;
 public class ListaCiudadesActivity extends AppCompatActivity {
 
     ArrayList<CiudadesVo> listDatos;
-    ArrayList<CiudadesVo> filterList;
     RecyclerView rvCities;
     EditText etSearch;
     String ciudadSeleccionada, ciudadSelecLimpia;
@@ -63,42 +57,17 @@ public class ListaCiudadesActivity extends AppCompatActivity {
         adapterRecycler.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Presionaste: "+listDatos.get(rvCities.getChildAdapterPosition(v)).getCiudad(), Toast.LENGTH_SHORT).show();
                 ciudadSeleccionada = listDatos.get(rvCities.getChildAdapterPosition(v)).getCiudad();
-                Log.d("CIUDAD", ciudadSeleccionada);
                 ciudadSelecLimpia = limpiaString(ciudadSeleccionada)+countryCode;
-                Log.d("CI_FOR", ciudadSelecLimpia);
                 getWeatherData(ciudadSelecLimpia);
             }
         });
 
         rvCities.setAdapter(adapterRecycler);
 
-
-        etSearch.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                s = s.toString().toLowerCase(Locale.ROOT);
-//                filterList = new ArrayList<>();
-//                for(int i=0;i<listDatos.size(); i++){
-//                    final String text = listDatos.get(i).toString().toLowerCase(Locale.ROOT);
-//                    if(text.contains(s)){
-//                        filterList.add(listDatos.get(i));
-//
-//                    }
-//                }
-//                adapterRecycler.notifyDataSetChanged();
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
+        //Ordenamos alfabeticamente la lista
+        Collections.sort(listDatos, CiudadesVoAZComparator);
+        adapterRecycler.notifyDataSetChanged();
 
     }
 
@@ -179,4 +148,11 @@ public class ListaCiudadesActivity extends AppCompatActivity {
         }
         return json;
     }
+
+    public static Comparator<CiudadesVo> CiudadesVoAZComparator = new Comparator<CiudadesVo>() {
+        @Override
+        public int compare(CiudadesVo o1, CiudadesVo o2) {
+            return o1.getCiudad().compareTo(o2.getCiudad());
+        }
+    };
 }
