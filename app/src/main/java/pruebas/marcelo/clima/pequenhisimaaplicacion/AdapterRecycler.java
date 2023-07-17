@@ -9,11 +9,17 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class AdapterRecycler extends RecyclerView.Adapter<AdapterRecycler.ViewHolderDatos> implements View.OnClickListener {
 
     ArrayList<CiudadesVo> listDatos;
     private View.OnClickListener listener;
+
+    public void setFilteredList(List<CiudadesVo> filteredList){
+        this.listDatos = (ArrayList<CiudadesVo>) filteredList;
+        notifyDataSetChanged();
+    }
 
     public AdapterRecycler(ArrayList<CiudadesVo> listDatos){
         this.listDatos = listDatos;
@@ -31,6 +37,7 @@ public class AdapterRecycler extends RecyclerView.Adapter<AdapterRecycler.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolderDatos holder, int position) {
         holder.tvItem.setText(listDatos.get(position).getCiudad());
+
     }
 
     @Override

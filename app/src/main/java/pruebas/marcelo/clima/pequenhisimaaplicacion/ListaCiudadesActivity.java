@@ -4,11 +4,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.ClipData;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.SearchView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,6 +27,8 @@ import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
+import java.util.Locale;
 
 import pruebas.marcelo.clima.pequenhisimaaplicacion.retrofit.ApiClient;
 import pruebas.marcelo.clima.pequenhisimaaplicacion.retrofit.ApiInterface;
@@ -32,12 +41,13 @@ import retrofit2.Response;
 public class ListaCiudadesActivity extends AppCompatActivity {
 
     ArrayList<CiudadesVo> listDatos;
+    List<CiudadesVo> filteredlist = new ArrayList<>();
     RecyclerView rvCities;
-    EditText etSearch;
     String ciudadSeleccionada, ciudadSelecLimpia;
     Double tempe, sensaTer, tempeMin, tempeMax;
     Integer temperatura, sensaTermi, tempeMini, tempeMaxi;
     final String countryCode = ",PY";
+    private SearchView svSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,10 +55,10 @@ public class ListaCiudadesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_lista_ciudades);
 
         listDatos = new ArrayList<>();
-        etSearch = findViewById(R.id.etSearch);
+        svSearch = findViewById(R.id.svSearch);
         rvCities = findViewById(R.id.rvCities);
+        svSearch.clearFocus();
         rvCities.setLayoutManager(new LinearLayoutManager(this));
-
 
         llenarCiudades();
 
@@ -63,12 +73,31 @@ public class ListaCiudadesActivity extends AppCompatActivity {
             }
         });
 
-        rvCities.setAdapter(adapterRecycler);
+        svSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
 
+            @Override
+            public boolean onQueryTextChange(String text) {
+                for(CiudadesVo item : listDatos){
+                    if(item.getCiudad().toLowerCase(Locale.ROOT).contains(text.toLowerCase(Locale.ROOT))){
+                        filteredlist.add(item);
+                    }
+                }
+                if(filteredlist.isEmpty()){
+                    Toast.makeText(getBaseContext(), "No data found", Toast.LENGTH_SHORT).show();
+                }else {
+                    adapterRecycler.setFilteredList(filteredlist);
+                }
+                return true;
+            }
+        });
+        rvCities.setAdapter(adapterRecycler);
         //Ordenamos alfabeticamente la lista
         Collections.sort(listDatos, CiudadesVoAZComparator);
         adapterRecycler.notifyDataSetChanged();
-
     }
 
     private void getWeatherData(String city){

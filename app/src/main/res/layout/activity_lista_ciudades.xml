@@ -4,16 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background"
     tools:context="pruebas.marcelo.clima.pequenhisimaaplicacion.ListaCiudadesActivity">
 
-    <EditText
-        android:id="@+id/etSearch"
+    <SearchView
+        android:id="@+id/svSearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:hint="Buscar"
+        android:layout_margin="8dp"
         android:layout_marginBottom="20dp"
         />
 
@@ -21,7 +22,8 @@
         android:id="@+id/rvCities"
         android:layout_width="match_parent"
         android:layout_height="600dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/etSearch"/>
+        app:layout_constraintTop_toBottomOf="@id/svSearch"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
